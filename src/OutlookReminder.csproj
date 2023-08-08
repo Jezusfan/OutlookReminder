@@ -56,7 +56,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>C62E229A8734F605321D338888C562340E465759</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>014DD98434B5833DBC18A1EFCD2E2983A675CA0A</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestKeyFile>OutlookReminder_TemporaryKey.pfx</ManifestKeyFile>
