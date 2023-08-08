@@ -1,6 +1,6 @@
 # Outlook Reminder
 
-This application is intended to fix two issues I have had with Outlook since the beginning: 
+This application is intended to fix three issues I have had with Outlook since the beginning: 
 
 1. You have to mess around with the Windows Startup folder to get Outlook to start when Windows starts up.
 2. Since the introduction of multiple monitors, I occasionally miss the Outlook Reminders.
