@@ -17,44 +17,22 @@ namespace OutlookReminder
             AppDomain.CurrentDomain.UnhandledException += AppDomainOnUnhandledException;
             if (!AllreadyRunning(1))
             {
-                Log.Write(EventLogEntryType.Information, "Started, checking for update");
-                frmUpdate splash;
-                bool flag = true;
+                Log.Write(EventLogEntryType.Information, "Started Outlook Reminder");
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.DoEvents();
+                
                 try
                 {
-                    if (ApplicationDeployment.IsNetworkDeployed && ApplicationDeployment.CurrentDeployment.CheckForUpdate())
-                    {
-                        Log.Write(EventLogEntryType.Information, "Update found, initializing update process");
-                        splash = new frmUpdate();
-                        flag = false;
-                        Application.Run(splash);
-                        Log.Write(EventLogEntryType.Information, "Update installed, restarting application");
-                        Application.Restart();
-                    }
+                    Application.Run(new frmSettings());
                 }
                 catch (Exception ex)
                 {
                     Log.Write(EventLogEntryType.Error, ex.ToString());
                     MessageBox.Show(ex.Message);
-                    flag = false;
                 }
-                if (flag)
-                {
-                    try
-                    {
-                        Log.Write(EventLogEntryType.Information, "No update found, resume startup");
-                        Application.Run(new frmSettings());
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Write(EventLogEntryType.Error, ex.ToString());
-                        MessageBox.Show(ex.Message);
-                    }
                     
-                }
+                
             }
             else
                 Log.Write(EventLogEntryType.Information, "Attemted to start another instance");
