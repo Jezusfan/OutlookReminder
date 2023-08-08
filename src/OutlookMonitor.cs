@@ -279,7 +279,7 @@ namespace OutlookReminder
                     if (path == lastPath)
                         path = path.Replace(" (x86)", string.Empty);
                     lastPath = path;
-                    Log.Write(EventLogEntryType.Error, $"Searching for Outlook executable in: {path}");
+                    Log.Write(EventLogEntryType.Information, $"Searching for Outlook executable in: {path}");
                     foreach (var subfolder in Directory.GetDirectories(path,"*", SearchOption.TopDirectoryOnly))
                     {
                         try

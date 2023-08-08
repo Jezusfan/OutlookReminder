@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Deployment.Application;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -120,31 +121,25 @@ namespace OutlookReminder
             {
                 Settings.Default.FirstTime = false;
                 Properties.Settings.Default.Save();
-                if (ApplicationDeployment.IsNetworkDeployed)
+                
+                RegistryKey rkApp = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true);
+                //Path to launch shortcut
+                
+                string runRegKey = "Outlook Reminder";
+                string startPath = Application.ExecutablePath;
+                Log.Write(EventLogEntryType.Information, $"Setting startup path to: {startPath}");
+                var existing = rkApp.GetValue(runRegKey);
+                if (Settings.Default.StartAtLogon)
                 {
-                    RegistryKey rkApp = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run", true);
-                    //Path to launch shortcut
-                    DeployManifest manifest;
-                    string runRegKey = "Outlook Reminder";
-                    using (MemoryStream stream = new MemoryStream(AppDomain.CurrentDomain.ActivationContext.DeploymentManifestBytes))
-                    {
-                        manifest = (DeployManifest)ManifestReader.ReadManifest("Deployment", stream, true);
-                    }
-                    string startPath = Environment.GetFolderPath(Environment.SpecialFolder.Programs) +
-                           String.Format(@"\{0}\{1}.appref-ms", manifest.Publisher, manifest.Product);
-
-                    var existing = rkApp.GetValue(runRegKey);
-                    if (Settings.Default.StartAtLogon)
-                    {
-                        if (existing == null)
-                            rkApp.SetValue(runRegKey, startPath);
-                    }
-                    else
-                    {
-                        if (existing != null)
-                            rkApp.DeleteValue(runRegKey);
-                    }
+                    if (existing == null || existing != startPath)
+                        rkApp.SetValue(runRegKey, startPath);
                 }
+                else
+                {
+                    if (existing != null)
+                        rkApp.DeleteValue(runRegKey);
+                }
+                
                 _suppressError = !_outlookMonitor.OutlookVersionSupported || !_outlookMonitor.OutlookProcessFound || _outlookMonitor.CredentialMismatch;
                 ToggleWindowState(FormWindowState.Minimized, false);
                 e.Cancel = true;
