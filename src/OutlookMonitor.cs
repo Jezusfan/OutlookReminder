@@ -45,9 +45,13 @@ namespace OutlookReminder
             int interval = TimeSpan.FromSeconds(Settings.Default.OutlookPollingProcessInterval).TotalMilliseconds.ToInt32();
             _timer = new Timer(OnTimerTick, null, interval, interval);
             OnTimerTick(null);
-            if (string.IsNullOrEmpty(Settings.Default.OutlookPath))
+            if (string.IsNullOrWhiteSpace(Settings.Default.OutlookPath))
             {
                 SearchForOutlook();
+            }
+            else
+            {
+                Log.Write(EventLogEntryType.Information, $"Outlook executable is located in: '{Settings.Default.OutlookPath}'");
             }
         }
 
@@ -264,38 +268,55 @@ namespace OutlookReminder
         
         private void SearchForOutlook()
         {
-            var mainFolders = new[] { Environment.SpecialFolder.ProgramFiles, Environment.SpecialFolder.ProgramFilesX86, Environment.SpecialFolder.CommonApplicationData};
+            Log.Write(EventLogEntryType.Information, "Searching for Outlook executable...");
+            var mainFolders = new[] { Environment.SpecialFolder.ProgramFilesX86, Environment.SpecialFolder.ProgramFiles, Environment.SpecialFolder.CommonApplicationData};
+            var lastPath = string.Empty;
             foreach (var specialFolder in mainFolders)
             {
                 try
                 {
                     var path = Environment.GetFolderPath(specialFolder);
+                    if (path == lastPath)
+                        path = path.Replace(" (x86)", string.Empty);
+                    lastPath = path;
+                    Log.Write(EventLogEntryType.Error, $"Searching for Outlook executable in: {path}");
                     foreach (var subfolder in Directory.GetDirectories(path,"*", SearchOption.TopDirectoryOnly))
                     {
                         try
                         {
                             foreach (var outlookPath in Directory.GetFiles(subfolder,"outlook.exe", SearchOption.AllDirectories))
                             {
+                                Log.Write(EventLogEntryType.Information, $"Found Outlook executable in: {outlookPath}");
                                 if (outlookPath.IndexOf("download", StringComparison.InvariantCultureIgnoreCase) == -1)
                                 {
-                                    Settings.Default.OutlookPath = outlookPath;
-                                    Settings.Default.Save();
-                                    return;
+                                    try
+                                    {
+                                        Log.Write(EventLogEntryType.Information, $"Saving Outlook executable: {outlookPath}");
+                                        Settings.Default.OutlookPath = outlookPath;
+                                        Settings.Default.Save();
+                                        return;
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        Log.Write(EventLogEntryType.FailureAudit, $"Failed saving Outlook executable location {outlookPath}. reason: {e.Message}");
+                                    }
                                 }
                             }
+                            Log.Write(EventLogEntryType.Information, $"Failed to find Outlook executable in: {subfolder}");
                         }
                         catch (UnauthorizedAccessException e)
                         {
-                            //swallow...
+                            Log.Write(EventLogEntryType.FailureAudit, $"Failed searching for Outlook executable in: {subfolder}. reason: {e.Message}");
                         }
                     }
                 }
                 catch (UnauthorizedAccessException e)
                 {
-                    //swallow...
+                    Log.Write(EventLogEntryType.FailureAudit, $"Failed searching for Outlook executable in: {specialFolder}. reason: {e.Message}");
                 }
                 
             }
+            Log.Write(EventLogEntryType.Information, $"Finished searching for Outlook executable");
         }
 
 

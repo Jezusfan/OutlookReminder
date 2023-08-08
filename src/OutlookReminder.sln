@@ -1,18 +1,26 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutlookReminder", "OutlookReminder.csproj", "{C4B52B0D-8816-471F-9077-0053B1E3227B}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "OutlookReminder.Installer", "..\OutlookReminder.Installer\OutlookReminder.Installer.vdproj", "{E730D47F-7A4B-4EFF-A8EC-16E2C9C600ED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		All|Any CPU = All|Any CPU
+		All|x86 = All|x86
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C4B52B0D-8816-471F-9077-0053B1E3227B}.All|Any CPU.ActiveCfg = Release|Any CPU
+		{C4B52B0D-8816-471F-9077-0053B1E3227B}.All|Any CPU.Build.0 = Release|Any CPU
+		{C4B52B0D-8816-471F-9077-0053B1E3227B}.All|x86.ActiveCfg = Release|Any CPU
+		{C4B52B0D-8816-471F-9077-0053B1E3227B}.All|x86.Build.0 = Release|Any CPU
 		{C4B52B0D-8816-471F-9077-0053B1E3227B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C4B52B0D-8816-471F-9077-0053B1E3227B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4B52B0D-8816-471F-9077-0053B1E3227B}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -21,8 +29,17 @@ Global
 		{C4B52B0D-8816-471F-9077-0053B1E3227B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C4B52B0D-8816-471F-9077-0053B1E3227B}.Release|x86.ActiveCfg = Release|Any CPU
 		{C4B52B0D-8816-471F-9077-0053B1E3227B}.Release|x86.Build.0 = Release|Any CPU
+		{E730D47F-7A4B-4EFF-A8EC-16E2C9C600ED}.All|Any CPU.ActiveCfg = Debug
+		{E730D47F-7A4B-4EFF-A8EC-16E2C9C600ED}.All|x86.ActiveCfg = Debug
+		{E730D47F-7A4B-4EFF-A8EC-16E2C9C600ED}.Debug|Any CPU.ActiveCfg = Debug
+		{E730D47F-7A4B-4EFF-A8EC-16E2C9C600ED}.Debug|x86.ActiveCfg = Debug
+		{E730D47F-7A4B-4EFF-A8EC-16E2C9C600ED}.Release|Any CPU.ActiveCfg = Release
+		{E730D47F-7A4B-4EFF-A8EC-16E2C9C600ED}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BFAF191E-336B-42CF-89BD-8D61437BC7F0}
 	EndGlobalSection
 EndGlobal
